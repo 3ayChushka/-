@@ -7,10 +7,10 @@
 #include <conio.h>
 #include <stddef.h>
 
-int new_zapis(zapis, chislo_zapisey);  /*Добавление новой записи*/
-int vivod_zapisey(zapis, chislo_zapisey); /* Вывод ВСЕХ записей*/
-int poisk(zapis, chislo_zapisey);  /*Поиск*/
-int vivod_zapisey_poiska(zapis,chislo_zapisey);  /*Вывод результата поиска*/
+int new_zapis(zapis, chislo_zapisey);  /*Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ Р·Р°РїРёСЃРё*/
+int vivod_zapisey(zapis, chislo_zapisey); /* Р’С‹РІРѕРґ Р’РЎР•РҐ Р·Р°РїРёСЃРµР№*/
+int poisk(zapis, chislo_zapisey);  /*РџРѕРёСЃРє*/
+int vivod_zapisey_poiska(zapis,chislo_zapisey);  /*Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚Р° РїРѕРёСЃРєР°*/
 
 struct DataBase
 {
@@ -30,27 +30,27 @@ int main()
 	db zapis[100], *ptr_zapis= &zapis[chislo_zapisey];
 
 	do {
-		printf("Выберите действие(работает 1-3)\n1-Добавить новую запись\n2-Поиск по полю\n3-Вывод записей\n4-Изменить запись\n5-Отсортировать по \"Частота событий на приложение\"\n6-Добавить произвольное количество записей\n0-Выход\n\n");
+		printf("Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ(СЂР°Р±РѕС‚Р°РµС‚ 1-3)\n1-Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ\n2-РџРѕРёСЃРє РїРѕ РїРѕР»СЋ\n3-Р’С‹РІРѕРґ Р·Р°РїРёСЃРµР№\n4-РР·РјРµРЅРёС‚СЊ Р·Р°РїРёСЃСЊ\n5-РћС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ \"Р§Р°СЃС‚РѕС‚Р° СЃРѕР±С‹С‚РёР№ РЅР° РїСЂРёР»РѕР¶РµРЅРёРµ\"\n6-Р”РѕР±Р°РІРёС‚СЊ РїСЂРѕРёР·РІРѕР»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїРёСЃРµР№\n0-Р’С‹С…РѕРґ\n\n");
 		vibor = _getch();
 
-		if (vibor == '1')/*Добавление новой записи*/
+		if (vibor == '1')/*Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ Р·Р°РїРёСЃРё*/
 			chislo_zapisey = new_zapis(ptr_zapis, chislo_zapisey);  
-		else if (vibor == '2')  /*Поиск по полю*/
+		else if (vibor == '2')  /*РџРѕРёСЃРє РїРѕ РїРѕР»СЋ*/
 		{
-			printf("Введите поле для поиска:\n1-Название\n2-Код операции\n3-Уровень события\n4-Время операции\n");
+			printf("Р’РІРµРґРёС‚Рµ РїРѕР»Рµ РґР»СЏ РїРѕРёСЃРєР°:\n1-РќР°Р·РІР°РЅРёРµ\n2-РљРѕРґ РѕРїРµСЂР°С†РёРё\n3-РЈСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ\n4-Р’СЂРµРјСЏ РѕРїРµСЂР°С†РёРё\n");
 			poisk(ptr_zapis, chislo_zapisey);
 		}
-		else if (vibor == '3') /*Вывод всех записей*/
+		else if (vibor == '3') /*Р’С‹РІРѕРґ РІСЃРµС… Р·Р°РїРёСЃРµР№*/
 		vivod_zapisey(ptr_zapis, chislo_zapisey);  
 	} while (vibor != '0');
 }
 
-int new_zapis(db *zapis, int chislo_zapisey) /*Добавление новой записи(пока в цикле)*/
+int new_zapis(db *zapis, int chislo_zapisey) /*Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ Р·Р°РїРёСЃРё(РїРѕРєР° РІ С†РёРєР»Рµ)*/
 {
 	for (int i = 0; i <= 0; i++)
 	{
 		chislo_zapisey++;
-		printf("Название приложения:\n"); /*Название приложения*/
+		printf("РќР°Р·РІР°РЅРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ:\n"); /*РќР°Р·РІР°РЅРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ*/
 		if(chislo_zapisey==1)fgets(zapis[chislo_zapisey].name_app, 50, stdin);
 		else
 		{
@@ -58,15 +58,15 @@ int new_zapis(db *zapis, int chislo_zapisey) /*Добавление новой записи(пока в ци
 			fgets(zapis[chislo_zapisey].name_app, 50, stdin);
 		}
 
-		printf("Код операции:\n");  /*Код операции*/
+		printf("РљРѕРґ РѕРїРµСЂР°С†РёРё:\n");  /*РљРѕРґ РѕРїРµСЂР°С†РёРё*/
 		scanf("%d", &zapis[chislo_zapisey].code);
 
-		printf("Выберите уровень события:\nA-Предупреждение\nB-Угроза\nC-Сбой\n");  /*Уровень события*/
+		printf("Р’С‹Р±РµСЂРёС‚Рµ СѓСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ:\nA-РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ\nB-РЈРіСЂРѕР·Р°\nC-РЎР±РѕР№\n");  /*РЈСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ*/
 		getchar();
 		scanf("%c", &zapis[chislo_zapisey].lvl);
 
 		int hour, min, sec;
-		printf("Введите время в формате __:__:__\n");   /*Время операции*/
+		printf("Р’РІРµРґРёС‚Рµ РІСЂРµРјСЏ РІ С„РѕСЂРјР°С‚Рµ __:__:__\n");   /*Р’СЂРµРјСЏ РѕРїРµСЂР°С†РёРё*/
 		getchar();
 		scanf("%d:%d:%d", &hour, &min, &sec);
 
@@ -77,51 +77,51 @@ int new_zapis(db *zapis, int chislo_zapisey) /*Добавление новой записи(пока в ци
 	return chislo_zapisey;
 }  
 
-int vivod_zapisey(db *zapis, int chislo_zapisey)  /*Вывод записей*/
+int vivod_zapisey(db *zapis, int chislo_zapisey)  /*Р’С‹РІРѕРґ Р·Р°РїРёСЃРµР№*/
 {
-	for (int chislo_zapisey_vivod = 1; chislo_zapisey_vivod <= chislo_zapisey; chislo_zapisey_vivod++) /*Вывод записей*/
+	for (int chislo_zapisey_vivod = 1; chislo_zapisey_vivod <= chislo_zapisey; chislo_zapisey_vivod++) /*Р’С‹РІРѕРґ Р·Р°РїРёСЃРµР№*/
 	{
-		printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis[chislo_zapisey_vivod].name_app, zapis[chislo_zapisey_vivod].code, zapis[chislo_zapisey_vivod].lvl, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_hour, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_min, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_sec);
+		printf("РќР°Р·РІР°РЅРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ: %sРљРѕРґ СЃРѕР±С‹С‚РёСЏ: %d\nРЈСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ: %c\nР’СЂРµРјСЏ СЃРѕР±С‹С‚РёСЏ: %d:%d:%d\n\n", zapis[chislo_zapisey_vivod].name_app, zapis[chislo_zapisey_vivod].code, zapis[chislo_zapisey_vivod].lvl, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_hour, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_min, zapis[chislo_zapisey_vivod].time[chislo_zapisey_vivod].tm_sec);
 	}
 	return 0;
 }
 
-int vivod_zapisey_poiska(db* zapis, int chislo_zapisey)  /*Вывод записей по поиску*/
+int vivod_zapisey_poiska(db* zapis, int chislo_zapisey)  /*Р’С‹РІРѕРґ Р·Р°РїРёСЃРµР№ РїРѕ РїРѕРёСЃРєСѓ*/
 {
-	printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis[chislo_zapisey].name_app, zapis[chislo_zapisey].code, zapis[chislo_zapisey].lvl, zapis[chislo_zapisey].time[chislo_zapisey].tm_hour, zapis[chislo_zapisey].time[chislo_zapisey].tm_min, zapis[chislo_zapisey].time[chislo_zapisey].tm_sec);
+	printf("РќР°Р·РІР°РЅРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ: %sРљРѕРґ СЃРѕР±С‹С‚РёСЏ: %d\nРЈСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ: %c\nР’СЂРµРјСЏ СЃРѕР±С‹С‚РёСЏ: %d:%d:%d\n\n", zapis[chislo_zapisey].name_app, zapis[chislo_zapisey].code, zapis[chislo_zapisey].lvl, zapis[chislo_zapisey].time[chislo_zapisey].tm_hour, zapis[chislo_zapisey].time[chislo_zapisey].tm_min, zapis[chislo_zapisey].time[chislo_zapisey].tm_sec);
 	return 0;
 }
 
-int poisk(db *zapis, int chislo_zapisey)  /*Поиск по заданному полю*/
+int poisk(db *zapis, int chislo_zapisey)  /*РџРѕРёСЃРє РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ РїРѕР»СЋ*/
 {
 	int vibor_poiska;
 	char name_poick[50];
 
-	vibor_poiska = _getch();/*Выбор поля для поиска*/
+	vibor_poiska = _getch();/*Р’С‹Р±РѕСЂ РїРѕР»СЏ РґР»СЏ РїРѕРёСЃРєР°*/
 
 	switch (vibor_poiska)
 	{
-	case '1':  /*Поиск по названию*/
+	case '1':  /*РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ*/
 		{
-			printf("Введите название:\n");
+			printf("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ:\n");
 			getchar();
 			fgets(name_poick, 50, stdin);
 			for (int i = 1; i <= chislo_zapisey; i++)
 				if (strcmp(name_poick,zapis[i].name_app)==0) vivod_zapisey_poiska(zapis, i);
 			break;
 		}
-	case '2':  /*Поиск по коду */
+	case '2':  /*РџРѕРёСЃРє РїРѕ РєРѕРґСѓ */
 	{
-		printf("Введите код операции\n");
+		printf("Р’РІРµРґРёС‚Рµ РєРѕРґ РѕРїРµСЂР°С†РёРё\n");
 		int code_poisk;
 		scanf("%d", &code_poisk);
 		for (int i = 1; i <= chislo_zapisey; i++)
 			if (code_poisk == zapis[i].code) vivod_zapisey_poiska(zapis, i);
 		break;
 	}
-	case '3':  /*Поиск по уровню события*/
+	case '3':  /*РџРѕРёСЃРє РїРѕ СѓСЂРѕРІРЅСЋ СЃРѕР±С‹С‚РёСЏ*/
 	{
-		printf("Введите уровень события\n");
+		printf("Р’РІРµРґРёС‚Рµ СѓСЂРѕРІРµРЅСЊ СЃРѕР±С‹С‚РёСЏ\n");
 		char lvl_poisk;
 		getchar();
 		scanf("%c", &lvl_poisk);
@@ -129,9 +129,9 @@ int poisk(db *zapis, int chislo_zapisey)  /*Поиск по заданному полю*/
 			if (lvl_poisk== zapis[i].lvl) vivod_zapisey_poiska(zapis, i);
 		break;
 	}
-	case '4':  /*Поиск по времени*/
+	case '4':  /*РџРѕРёСЃРє РїРѕ РІСЂРµРјРµРЅРё*/
 	{
-		printf("Введите время __:__:__\n");
+		printf("Р’РІРµРґРёС‚Рµ РІСЂРµРјСЏ __:__:__\n");
 		int hour_poisk, min_poisk, sec_poisk;
 		scanf("%d:%d:%d", &hour_poisk, &min_poisk, &sec_poisk);
 		for (int i = 1; i <= chislo_zapisey; i++)
