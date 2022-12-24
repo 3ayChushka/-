@@ -46,7 +46,7 @@ int main()
 		printf("Выберите действие\n1-Добавить новую запись\n2-Поиск по полю\n3-Вывод записей\n4-Изменить запись\n5-Отсортировать по \"Частота событий на приложение\"\n6-Добавить произвольное количество записей\n0-Выход\n\n");
 		vibor = _getch();
 
-		if (vibor == '1')   /*Добавление новой записи  РАБОТАЕТ*/
+		if (vibor == '1')   /*Добавление новой записи*/
 		{
 			base = fopen("База Данных.txt", "a");
 			chislo_zapisey = new_zapis(zapis, chislo_zapisey, base);
@@ -97,14 +97,14 @@ int main()
 			fclose(base);
 		}
 
-		else if (vibor == '3') /*Вывод всех записей   РАБОТАЕТ*/
+		else if (vibor == '3') /*Вывод всех записей*/
 		{
 			base = fopen("База Данных.txt", "r");
 			chislo_zapisey=vivod_zapisey(zapis, chislo_zapisey, base);  /*Возвращает число записей, которые записаны в файле*/
 			fclose(base);
 		}
 
-		else if (vibor == '4')   /* Изменить запись     РАБОТАЕТ*/
+		else if (vibor == '4')   /* Изменить запись*/
 		{
 			base = fopen("База данных.txt", "r");
 			edit_zapis(zapis, chislo_zapisey, base);
@@ -119,7 +119,7 @@ int main()
 			fclose(base);
 		}
 
-		else if (vibor == '6')   /*Добавление нескольких записей     РАБОТАЕТ*/
+		else if (vibor == '6')   /*Добавление нескольких записей*/
 		{
 			printf("Сколько вы хотите добавить записей?\n");
 			int nes_zapis;
