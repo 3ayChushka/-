@@ -14,8 +14,8 @@ int poisk_code(zapis, chislo_zapisey, base); /* Поиск по коду*/
 int poisk_time(zapis, chislo_zapisey, base, ind_poisk, hour_poisk, min_poisk, sec_poisk, hour_poisk_1, min_poisk_1, sec_poisk_1);  /*Поиск по диапазону времени*/
 int edit_zapis(zapis, chislo_zapisey, base);  /*Изменить запись*/
 void sort(zapis, zapis2, chislo_zapisey);  /*Сортировка*/
-int compare_name(av, bv);  /*Функция для обработки сортировки*/
-int compare_count(av,bv);
+int compare_name(av, bv);  /*Функция для обработки сортировки по названию*/
+int compare_count(av,bv);  /*Функция для обработки сортировки по количеству операций*/
 
 struct DataBase
 {
@@ -274,7 +274,7 @@ int vivod_zapisey(base_t* zapis, int chislo_zapisey, FILE *base)  /*Вывод �
 	return str;
 }
 
-int edit_zapis(base_t* zapis, int chislo_zapisey, FILE *base)
+int edit_zapis(base_t* zapis, int chislo_zapisey, FILE *base)   /*Изменить запись*/
 {
 	int number;
 
@@ -361,13 +361,13 @@ void sort(base_t* zapis, sort_t *zapis2, int chislo_zapisey, FILE* base)  /*Со
 		printf("----------Запись %d---------\nНазвание приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", i+1, zapis2[i].z2->name_app, zapis2[i].z2->code, zapis2[i].z2->lvl, zapis2[i].z2->time.tm_hour, zapis2[i].z2->time.tm_min, zapis2[i].z2->time.tm_sec);
 	}
 
-int compare_name(const void* av, const void* bv)
+int compare_name(const void* av, const void* bv)   /*Сортировка по названию, чтобы посчитать, сколько событий на каждое приложение*/
 {
 	const base_t *a = av, *b = bv;
 	return strcmp(a->name_app, b->name_app);
 }
 
-int compare_count(const void* av, const void* bv)
+int compare_count(const void* av, const void* bv)    /*Сортировка относительно количества операций*/
 {
 	const sort_t* a = av, * b = bv;
 	if (a->c > b->c)return -1;
