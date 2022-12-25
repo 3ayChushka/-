@@ -25,15 +25,16 @@ struct sort
 typedef struct sort sort_t;
 
 
-int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base);
-int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base);
-int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, int hour_poisk, int min_poisk, int sec_poisk, int hour_poisk_1, int min_poisk_1, int sec_poisk_1);
-int read_zapis(FILE* base, base_t* zapis);
-void vivod_zapisey(base_t* zapis, int chislo_zapisey);
-int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base);
-void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base);
-int compare_name(const void* av, const void* bv);
-int compare_count(const void* av, const void* bv);
+int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base); /*Создание новой записи*/
+int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base);  /*Поиск по коду события*/
+int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, struct tm t, struct tm t1);   /*Поиск по диапазону времени*/
+int read_zapis(FILE* base, base_t* zapis);   /*Чтение из файла*/
+void zapis_file(FILE* base, base_t* zapis, int chislo_zapisey, int q);
+void vivod_zapisey(base_t* zapis, int chislo_zapisey);  /*Вывод записей*/
+int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base);   /*Редактировать запись*/
+void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base);  /*Сортировка*/
+int compare_name(const void* av, const void* bv);  /*Сортировка по названию*/
+int compare_count(const void* av, const void* bv);  /*Сортировка по частоте*/
 
 
 int main()
@@ -71,27 +72,24 @@ int main()
 
 			else if (vibor_poiska == '2')
 			{
-				int hour_poisk, min_poisk, sec_poisk, hour_poisk_1, min_poisk_1, sec_poisk_1;
 				ind_poisk = 0;
+				struct tm t, t1;
 
 				printf("Введите диапазон времени: __:__:__-__:__:__\n");
-				scanf("%d:%d:%d-%d:%d:%d", &hour_poisk, &min_poisk, &sec_poisk, &hour_poisk_1, &min_poisk_1, &sec_poisk_1);
+				scanf("%d:%d:%d-%d:%d:%d", &t.tm_hour, &t.tm_min, &t.tm_sec, &t1.tm_hour, &t1.tm_min, &t1.tm_sec);
 				getchar();
 				printf("\n");
 
 				for (int u = 0; u < chislo_zapisey; u++)
 				{
-					ind_poisk = poisk_time(zapis, chislo_zapisey, base, ind_poisk, hour_poisk, min_poisk, sec_poisk, hour_poisk_1, min_poisk_1, sec_poisk_1);
+					ind_poisk = poisk_time(zapis, chislo_zapisey, base, ind_poisk, t, t1)+1;
 					if (ind_poisk >= 0)
 						printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis[ind_poisk].name_app, zapis[ind_poisk].code, zapis[ind_poisk].lvl, zapis[ind_poisk].time.tm_hour, zapis[ind_poisk].time.tm_min, zapis[ind_poisk].time.tm_sec);
 
 					if (ind_poisk >= chislo_zapisey) break;
 					else u = ind_poisk;
-					ind_poisk++;
 				}
-			}
-
-			else
+			} else
 			{
 				printf("Ошибка\n");
 				ind_poisk = -1;
@@ -143,17 +141,14 @@ int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base) /*Добавлен�
 {
 	printf("Название приложения:\n");
 	fgets(zapis[chislo_zapisey].name_app, 50, stdin);
-	fprintf(base, "%s", zapis[chislo_zapisey].name_app);
 
 	printf("Код операции:\n");
 	scanf("%d", &zapis[chislo_zapisey].code);
 	getchar();
-	fprintf(base, "%d\n", zapis[chislo_zapisey].code);
-
+	
 	printf("Введите уровень события\nA-Предупреждение\nB-Угроза\nC-Сбой\n");
 	scanf("%c", &zapis[chislo_zapisey].lvl);
 	getchar();
-	fprintf(base, "%c\n", zapis[chislo_zapisey].lvl);
 
 	int hour, min, sec;
 	printf("Введите время в формате __:__:__\n");
@@ -164,8 +159,7 @@ int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base) /*Добавлен�
 	zapis[chislo_zapisey].time.tm_min = min;
 	zapis[chislo_zapisey].time.tm_sec = sec;
 
-	fprintf(base, "%d %d %d", zapis[chislo_zapisey].time.tm_hour, zapis[chislo_zapisey].time.tm_min, zapis[chislo_zapisey].time.tm_sec);
-
+	zapis_file(base, zapis, chislo_zapisey, 1);
 	chislo_zapisey++;
 
 	return chislo_zapisey;
@@ -205,6 +199,17 @@ int read_zapis(FILE* base, base_t* zapis)
 	return str;
 }
 
+void zapis_file(FILE* base, base_t* zapis, int chislo_zapisey, int q)
+{
+	for (int i = chislo_zapisey; i < chislo_zapisey + q; i++)
+	{
+		fprintf(base, "%s", zapis[i].name_app);
+		fprintf(base, "%d\n", zapis[i].code);
+		fprintf(base, "%c\n", zapis[i].lvl);
+		fprintf(base, "%d %d %d", zapis[i].time.tm_hour, zapis[i].time.tm_min, zapis[i].time.tm_sec);
+	}
+}
+
 int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base)  /*Поиск по заданному полю*/
 {
 	int code_poisk;
@@ -221,23 +226,23 @@ int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base)  /*Поиск по
 	return -1;
 }
 
-int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, int hour_poisk, int min_poisk, int sec_poisk, int hour_poisk_1, int min_poisk_1, int sec_poisk_1)
+int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, struct tm t, struct tm t1)
 {
 	read_zapis(base, zapis);
 
 	for (int i = ind_poisk; i < chislo_zapisey; i++)
 	{
-		if (zapis[i].time.tm_hour >= hour_poisk && zapis[i].time.tm_hour < hour_poisk_1)
+		if (zapis[i].time.tm_hour >= t.tm_hour && zapis[i].time.tm_hour < t1.tm_hour)
 		{
 			return i;
 		}
-		else if (zapis[i].time.tm_hour == hour_poisk || zapis[i].time.tm_hour == hour_poisk_1)
-			if (zapis[i].time.tm_min >= min_poisk && zapis[i].time.tm_min < min_poisk_1)
+		else if (zapis[i].time.tm_hour == t.tm_hour || zapis[i].time.tm_hour == t1.tm_hour)
+			if (zapis[i].time.tm_min >= t.tm_min && zapis[i].time.tm_min < t1.tm_min)
 			{
 				return i;
 			}
-			else if (zapis[i].time.tm_min == min_poisk || zapis[i].time.tm_min == min_poisk_1)
-				if (zapis[i].time.tm_sec >= sec_poisk && zapis[i].time.tm_sec < sec_poisk_1)
+			else if (zapis[i].time.tm_min == t.tm_min || zapis[i].time.tm_min == t1.tm_min)
+				if (zapis[i].time.tm_sec >= t.tm_sec && zapis[i].time.tm_sec < t1.tm_sec)
 				{
 					return i;
 				}
@@ -262,10 +267,9 @@ int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base)   /*Изменит
 	scanf("%d", &number);
 	getchar();
 
-	if (number - 1 > chislo_zapisey - 1)printf("Всего записей:%d\nЗапись не обнаружена\n\n", chislo_zapisey);
+	if (number - 1 > chislo_zapisey - 1) printf("Всего записей:%d\nЗапись не обнаружена\n\n", chislo_zapisey);
 	else
 	{
-		int o = 0;
 		read_zapis(base, zapis);
 		fclose(base);
 
@@ -290,13 +294,7 @@ int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base)   /*Изменит
 		zapis[number - 1].time.tm_sec = sec;
 
 		base = fopen("База данных.txt", "w");
-		for (int i = 0; i < chislo_zapisey; i++)  /*Запись в файл записей с изменением*/
-		{
-			fprintf(base, "%s", zapis[i].name_app);
-			fprintf(base, "%d\n", zapis[i].code);
-			fprintf(base, "%c\n", zapis[i].lvl);
-			fprintf(base, "%d %d %d", zapis[i].time.tm_hour, zapis[i].time.tm_min, zapis[i].time.tm_sec);
-		}
+		zapis_file(base, zapis, 0, chislo_zapisey);
 	}
 	return 0;
 }
