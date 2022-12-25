@@ -207,22 +207,8 @@ int read_zapis(FILE* base, base_t* zapis)
 
 int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base)  /*Поиск по заданному полю*/
 {
-	int o = 0, code_poisk;
-	char n[50];
-	while (!feof(base))  /*Считывание всех записей из файла*/
-	{
-		fgets(zapis[o].name_app, 50, base);
-		fscanf(base, "%d", &zapis[o].code);
-		fgets(n, 50, base);
-
-		fscanf(base, "%s", &zapis[o].lvl);
-		fgets(n, 50, base);
-
-		fscanf(base, "%d", &zapis[o].time.tm_hour);
-		fscanf(base, "%d", &zapis[o].time.tm_min);
-		fscanf(base, "%d", &zapis[o].time.tm_sec);
-		o++;
-	}
+	int code_poisk;
+	read_zapis(base, zapis);
 
 	printf("Введите код операции\n");
 	scanf("%d", &code_poisk);
@@ -237,22 +223,7 @@ int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base)  /*Поиск по
 
 int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, int hour_poisk, int min_poisk, int sec_poisk, int hour_poisk_1, int min_poisk_1, int sec_poisk_1)
 {
-	int o = 0;
-	char n[50];
-	while (!feof(base))  /*Считывание всех записей из файла*/
-	{
-		fgets(zapis[o].name_app, 50, base);
-		fscanf(base, "%d", &zapis[o].code);
-		fgets(n, 50, base);
-
-		fscanf(base, "%s", &zapis[o].lvl);
-		fgets(n, 50, base);
-
-		fscanf(base, "%d", &zapis[o].time.tm_hour);
-		fscanf(base, "%d", &zapis[o].time.tm_min);
-		fscanf(base, "%d", &zapis[o].time.tm_sec);
-		o++;
-	}
+	read_zapis(base, zapis);
 
 	for (int i = ind_poisk; i < chislo_zapisey; i++)
 	{
