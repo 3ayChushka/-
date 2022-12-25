@@ -42,8 +42,8 @@ int main()
 	setlocale(LC_ALL, "RUS");
 
 	int vibor, chislo_zapisey = 0;
-	base_t zapis[100];
-	sort_t zapis2[100];
+	base_t *zapis=NULL;
+	sort_t *zapis2=NULL;
 	FILE* base;
 
 	do {
@@ -53,6 +53,8 @@ int main()
 		if (vibor == '1')   /*Добавление новой записи*/
 		{
 			base = fopen("База Данных.txt", "a");
+			zapis = realloc(zapis, (chislo_zapisey + 1) * sizeof(base_t));
+
 			chislo_zapisey = new_zapis(zapis, chislo_zapisey, base);
 			fclose(base);
 		}
@@ -100,9 +102,19 @@ int main()
 
 		else if (vibor == '3') /*Вывод всех записей*/
 		{
+			base = fopen("База данных.txt", "r");
+			int str = 0;
+			while (!feof(base))     /*Цикл для подсчёта записей в файле для выделения памяти*/
+			{
+				if (fgetc(base) == '\n')
+					str++;
+			}
+			str = str / 3;
+			zapis = (base_t*)malloc(str * sizeof(base_t));
+
 			base = fopen("База Данных.txt", "r");
 			chislo_zapisey = read_zapis(base, zapis);
-			vivod_zapisey(zapis, chislo_zapisey);  /*Возвращает число записей, которые записаны в файле*/
+			vivod_zapisey(zapis, chislo_zapisey); 
 			fclose(base);
 		}
 
@@ -117,6 +129,7 @@ int main()
 		{
 			printf("Сортировка по критерию Частота событий на приложение\n\n");
 			base = fopen("База Данных.txt", "r");
+			zapis2 = malloc(chislo_zapisey*sizeof(sort_t));
 			sort(zapis, zapis2, chislo_zapisey, base);
 			fclose(base);
 		}
@@ -167,6 +180,7 @@ int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base) /*Добавлен�
 
 int read_zapis(FILE* base, base_t* zapis)
 {
+
 	int str = 0;
 	while (!feof(base))     /*Цикл для подсчёта уже существующих записей в файле*/
 	{
@@ -180,7 +194,6 @@ int read_zapis(FILE* base, base_t* zapis)
 	for (int chislo_read = 0; chislo_read < str; chislo_read++) /*Вывод записей*/
 	{
 		char n[20];  /*Массив, чтобы убрать всё неотсканированное*/
-
 		if (feof(base) == 0)
 		{
 			fgets(zapis[chislo_read].name_app, 50, base);
