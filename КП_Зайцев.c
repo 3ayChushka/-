@@ -120,7 +120,7 @@ int main()
 
 		else if (vibor == '4')   /* Изменить запись*/
 		{
-			base = fopen("База данных.txt", "r");
+			base = fopen("База данных.txt", "w+");
 			edit_zapis(zapis, chislo_zapisey, base);
 			fclose(base);
 		}
@@ -284,7 +284,6 @@ int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base)   /*Изменит
 	else
 	{
 		read_zapis(base, zapis);
-		fclose(base);
 
 		printf("Название приложения:\n");            /*Изменение записи*/
 		fgets(zapis[number - 1].name_app, 50, stdin);
@@ -306,7 +305,6 @@ int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base)   /*Изменит
 		zapis[number - 1].time.tm_min = min;
 		zapis[number - 1].time.tm_sec = sec;
 
-		base = fopen("База данных.txt", "w");
 		zapis_file(base, zapis, 0, chislo_zapisey);
 	}
 	return 0;
