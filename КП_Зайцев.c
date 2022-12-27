@@ -26,14 +26,14 @@ typedef struct sort sort_t;
 
 
 int new_zapis(base_t* zapis, int chislo_zapisey, FILE* base); /*Создание новой записи*/
-int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base);  /*Поиск по коду события*/
+int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base, int code_poisk);  /*Поиск по коду события*/
 int poisk_time(base_t* zapis, int chislo_zapisey, FILE* base, int ind_poisk, struct tm t, struct tm t1);   /*Поиск по диапазону времени*/
 int read_zapis(FILE* base, base_t* zapis);   /*Чтение из файла*/
 void zapis_file(FILE* base, base_t* zapis, int chislo_zapisey, int q);
 void vivod_zapisey(base_t* zapis, int chislo_zapisey);  /*Вывод записей*/
-int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base);   /*Редактировать запись*/
+int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base, int number);   /*Редактировать запись*/
 void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base);  /*Сортировка*/
-int compare_name(const void* av, const void* bv);  /*Сортировка по названию*/
+int compare_name(const void** av, const void** bv);  /*Сортировка по названию*/
 int compare_count(const void* av, const void* bv);  /*Сортировка по частоте*/
 
 
@@ -68,7 +68,12 @@ int main()
 			base = fopen("База данных.txt", "r");
 			if (vibor_poiska == '1')
 			{
-				ind_poisk = poisk_code(zapis, chislo_zapisey, base);
+				int code_poisk;
+				printf("Введите код операции\n");
+				scanf("%d", &code_poisk);
+				getchar();
+
+				ind_poisk = poisk_code(zapis, chislo_zapisey, base, code_poisk);
 				if (ind_poisk >= 0) printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis[ind_poisk].name_app, zapis[ind_poisk].code, zapis[ind_poisk].lvl, zapis[ind_poisk].time.tm_hour, zapis[ind_poisk].time.tm_min, zapis[ind_poisk].time.tm_sec);
 			}
 
@@ -120,8 +125,14 @@ int main()
 
 		else if (vibor == '4')   /* Изменить запись*/
 		{
+			int number;
+
+			printf("Введите номер записи, которую хотите изменить\n");
+			scanf("%d", &number);
+			getchar();
+
 			base = fopen("База данных.txt", "w+");
-			edit_zapis(zapis, chislo_zapisey, base);
+			edit_zapis(zapis, chislo_zapisey, base, number);
 			fclose(base);
 		}
 
@@ -223,14 +234,9 @@ void zapis_file(FILE* base, base_t* zapis, int chislo_zapisey, int q)
 	}
 }
 
-int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base)  /*Поиск по заданному полю*/
+int poisk_code(base_t* zapis, int chislo_zapisey, FILE* base, int code_poisk)  /*Поиск по заданному полю*/
 {
-	int code_poisk;
 	read_zapis(base, zapis);
-
-	printf("Введите код операции\n");
-	scanf("%d", &code_poisk);
-	getchar();
 
 	for (int i = 0; i < chislo_zapisey; i++)
 	{
@@ -272,14 +278,8 @@ void vivod_zapisey(base_t* zapis, int chislo_zapisey)  /*Вывод записе
 	}
 }
 
-int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base)   /*Изменить запись*/
+int edit_zapis(base_t* zapis, int chislo_zapisey, FILE* base, int number)   /*Изменить запись*/
 {
-	int number;
-
-	printf("Введите номер записи, которую хотите изменить\n");
-	scanf("%d", &number);
-	getchar();
-
 	if (number - 1 > chislo_zapisey - 1) printf("Всего записей:%d\nЗапись не обнаружена\n\n", chislo_zapisey);
 	else
 	{
@@ -336,9 +336,9 @@ void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base)  /*Со
 		printf("----------Запись %d---------\nНазвание приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", i + 1, zapis2[i].z2->name_app, zapis2[i].z2->code, zapis2[i].z2->lvl, zapis2[i].z2->time.tm_hour, zapis2[i].z2->time.tm_min, zapis2[i].z2->time.tm_sec);
 }
 
-int compare_name(const void* av, const void* bv)   /*Сортировка по названию, чтобы посчитать, сколько событий на каждое приложение*/
+int compare_name(const void** av, const void** bv)   /*Сортировка по названию, чтобы посчитать, сколько событий на каждое приложение*/
 {
-	const base_t* a = av, * b = bv;
+	const base_t* a = av, *b = bv;
 	return strcmp(a->name_app, b->name_app);
 }
 
