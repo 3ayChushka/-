@@ -19,7 +19,7 @@ typedef struct DataBase base_t;
 
 struct sort
 {
-	base_t z2[100];
+	base_t z2;
 	int c;
 };
 typedef struct sort sort_t;
@@ -96,7 +96,7 @@ int main()
 
 					ind_poisk++;
 					if (ind_poisk >= chislo_zapisey) break;
-					
+
 				}
 			}
 			else
@@ -326,7 +326,7 @@ void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base)  /*Со
 	for (int i = 0; i < chislo_zapisey; i++)
 	{
 		(zapis2 + i)->c = 1;
-		*(zapis2 + i)->z2 = *(zapis + i);
+		(zapis2 + i)->z2 = *(zapis + i);
 
 		if (strcmp((zapis + i)->name_app, (zapis + i + 1)->name_app) == 0)
 		{
@@ -341,7 +341,7 @@ void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base)  /*Со
 	qsort(zapis2, chislo_zapisey, sizeof(sort_t), compare_count);
 
 	for (int i = 0; i < chislo_zapisey; i++)
-		printf("----------Запись %d---------\nНазвание приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", i + 1, zapis2[i].z2->name_app, zapis2[i].z2->code, zapis2[i].z2->lvl, zapis2[i].z2->time.tm_hour, zapis2[i].z2->time.tm_min, zapis2[i].z2->time.tm_sec);
+		printf("----------Запись %d---------\nНазвание приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", i + 1, (zapis2+i)->z2.name_app, (zapis2 + i)->z2.code, (zapis2 + i)->z2.lvl, (zapis2 + i)->z2.time.tm_hour, (zapis2 + i)->z2.time.tm_min, (zapis2 + i)->z2.time.tm_sec);
 }
 
 int compare_name(const void** av, const void** bv)   /*Сортировка по названию, чтобы посчитать, сколько событий на каждое приложение*/
