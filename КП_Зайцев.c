@@ -29,9 +29,9 @@ int new_zapis(base_t* zapis, int chislo_zapisey); /*Создание новой 
 int poisk_code(base_t* zapis, int chislo_zapisey, int code_poisk);  /*Поиск по коду события*/
 int poisk_time(base_t* zapis, int chislo_zapisey, int ind_poisk, struct tm t, struct tm t1);   /*Поиск по диапазону времени*/
 int read_zapis(base_t* zapis);   /*Чтение из файла*/
-void zapis_file(base_t* zapis, int chislo_zapisey, int q);
+void zapis_file(base_t* zapis, int chislo_zapisey, int q, int a);
 void vivod_zapisey(base_t* zapis, int chislo_zapisey);  /*Вывод записей*/
-void vivod_odnoy_zapisi(base_t* zapis, int i);  /*Вывод одной записи*/
+void vivod_odnoy_zapisi(base_t zapis);  /*Вывод одной записи*/
 int edit_zapis(base_t* zapis, int chislo_zapisey, int number);   /*Редактировать запись*/
 void sort(base_t* zapis, sort_t* zapis2, int chislo_zapisey, FILE* base);  /*Сортировка*/
 int compare_name(const void** av, const void** bv);  /*Сортировка по названию*/
@@ -72,7 +72,7 @@ int main()
 				getchar();
 
 				ind_poisk = poisk_code(zapis, chislo_zapisey, code_poisk);
-				if (ind_poisk >= 0) vivod_odnoy_zapisi(zapis, ind_poisk);
+				if (ind_poisk >= 0) vivod_odnoy_zapisi(zapis[ind_poisk]);
 			}
 
 			else if (vibor_poiska == '2')
@@ -89,7 +89,7 @@ int main()
 				{
 					ind_poisk = poisk_time(zapis, chislo_zapisey, ind_poisk, t, t1);
 					if (ind_poisk >= 0)
-						vivod_odnoy_zapisi(zapis, ind_poisk);
+						vivod_odnoy_zapisi(zapis[ind_poisk]);
 
 					ind_poisk++;
 					if (ind_poisk >= chislo_zapisey) break;
@@ -279,9 +279,9 @@ void vivod_zapisey(base_t* zapis, int chislo_zapisey)  /*Вывод записе
 
 }
 
-void vivod_odnoy_zapisi(base_t* zapis, int i)
+void vivod_odnoy_zapisi(base_t zapis)
 {
-	printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis[i].name_app, zapis[i].code, zapis[i].lvl, zapis[i].time.tm_hour, zapis[i].time.tm_min, zapis[i].time.tm_sec);
+	printf("Название приложения: %sКод события: %d\nУровень события: %c\nВремя события: %d:%d:%d\n\n", zapis.name_app, zapis.code, zapis.lvl, zapis.time.tm_hour, zapis.time.tm_min, zapis.time.tm_sec);
 }
 
 int edit_zapis(base_t* zapis, int chislo_zapisey, int number)   /*Изменить запись*/
